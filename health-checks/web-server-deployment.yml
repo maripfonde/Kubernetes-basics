@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-web-server
+  template:
+    metadata:
+      labels:
+        app: my-web-server
+    spec:
+      containers:
+      - name: my-web-server
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-web-server
+  template:
+    metadata:
+      labels:
+        app: my-web-server
+    spec:
+      containers:
+      - name: my-web-server
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /nonexistent
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
